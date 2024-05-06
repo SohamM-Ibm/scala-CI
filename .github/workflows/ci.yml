@@ -2,7 +2,7 @@ name: Scala Merge CI
 
 on:
   push:
-    branches: ['2.*.x']
+    branches: ['soham-CI']
   workflow_dispatch:
 
 defaults:
@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        java: [8, 11, 17, 21, 22]
+        os: [self-hosted]
+        java: [11, 17]
     runs-on: ${{matrix.os}}
     steps:
       - run: git config --global core.autocrlf false
@@ -35,6 +35,9 @@ jobs:
 
       - name: Build
         run: |
+          wget https://github.com/sbt/sbt/releases/download/v1.2.7/sbt-1.2.7.tgz
+          tar -zxvf sbt-1.2.7.tgz
+          export PATH=$PWD/sbt/bin:$PATH
           sbt setupPublishCore generateBuildCharacterPropertiesFile headerCheck publishLocal
 
       - name: Test
