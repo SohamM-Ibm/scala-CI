@@ -42,5 +42,8 @@ jobs:
 
       - name: Test
         run: |
+          wget https://github.com/sbt/sbt/releases/download/v1.2.7/sbt-1.2.7.tgz
+          tar -zxvf sbt-1.2.7.tgz
+          export PATH=$PWD/sbt/bin:$PATH
           STARR=`cat buildcharacter.properties | grep ^maven.version.number | cut -d= -f2` && echo $STARR
           sbt -Dstarr.version=$STARR setupValidateTest test:compile info testAll
